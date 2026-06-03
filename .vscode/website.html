@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="THE DRIP - Destinasi utama sneaker branded premium dan langka. Nike Air Jordan, Kyrie, Adidas Superstar Original 100% Siap Kirim.">
+    <title>THE DRIP | Premium Branded Sneakers & Streetwear</title>
+    <style>
+        /* CSS RESET & SYSTEM VARIABLES */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --bg-card: #1a1a1a;
+            --accent: #ff0055;
+            --accent-hover: #ff3377;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 5%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* HERO SECTION */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            background: radial-gradient(circle at center, rgba(255, 0, 85, 0.15) 0%, rgba(10, 10, 10, 1) 70%);
+            margin-top: 60px;
+        }
+
+        .hero-badge {
+            background: rgba(255, 0, 85, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        #hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+
+        #hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            background: transparent;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+        }
+
+        /* SECTION LAYOUTS */
+        section {
+            padding: 8rem 5% 4rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title span {
+            color: var(--accent);
+        }
+
+        /* PRODUCTS SECTION (THE HYPE DROP) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 0, 85, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 320px;
+            background: #222;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 2px;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .brand-tag {
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            height: 70px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1rem;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 900;
+        }
+
+        .buy-btn {
+            background: none;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .buy-btn:hover {
+            background: var(--text-main);
+            color: var(--bg-primary);
+        }
+
+        /* ABOUT STORY SECTION */
+        #story {
+            background: var(--bg-secondary);
+        }
+
+        .story-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .story-text h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .story-img-frame {
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            padding: 1rem;
+            background: var(--bg-card);
+        }
+
+        .story-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* TESTIMONIALS */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .testi-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .testi-text {
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        .testi-author {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .testi-status {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* FAQ SECTION */
+        #faq {
+            background: var(--bg-secondary);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .faq-q {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .faq-a {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* CONTACT FORM */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .contact-container .btn {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #050505;
+            padding: 4rem 5% 2rem 5%;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links h5 {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ANIMATIONS */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 85, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 85, 0); }
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 5%; }
+            .nav-links { display: none; } /* Simpel untuk zero-dependency */
+            section { padding: 5rem 5% 3rem 5%; }
+            .contact-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#" class="logo">THE <span>DRIP</span></a>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#koleksi">Koleksi</a></li>
+            <li><a href="#story">Story</a></li>
+            <li><a href="#ulasan">Ulasan</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#kontak">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="hero">
+        <div class="hero-badge">Drop Terbatas Minggu Ini</div>
+        <h1>Elevate Your<br>Street Cred</h1>
+        <p>Bukan sekadar sepatu, ini adalah pernyataan diri. Dapatkan koleksi sneakers branded original, langka, dan paling dicari di seluruh dunia hanya dalam satu genggaman.</p>
+        <a href="#koleksi" class="btn">Amankan Sepatumu</a>
+    </header>
+
+    <!-- PRODUCTS SECTION -->
+    <section id="koleksi">
+        <h2 class="section-title">The <span>Hype Drop</span></h2>
+        <div class="product-grid">
+            
+            <!-- PRODUCT 1 -->
+            <div class="product-card">
+                <span class="product-badge">Hot Drop</span>
+                <div class="image-container">
+                    <img src="gmbspt/jordan1" alt="Nike Air Jordan 1 Retro High" class="product-image">
+                </div>
+                <div class="product-info">
+                    <span class="brand-tag">Nike Basketball</span>
+                    <h3 class="product-name">Air Jordan 1 Retro High</h3>
+                    <p class="product-desc">Mahakarya abadi yang melahirkan budaya sneaker modern. Dilengkapi kulit premium berdaya tahan tinggi dan bantalan Air-Sole untuk kenyamanan ikonik sepanjang hari.</p>
+                    <div class="product-footer">
+                        <div class="price">Rp 3.299.000</div>
+                        <button class="buy-btn">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2 -->
+            <div class="product-card">
+                <span class="product-badge">Performance</span>
+                <div class="image-container">
+                    <img src="https://unsplash.com" alt="Nike Kyrie Irving Flytrap" class="product-image">
+                </div>
+                <div class="product-info">
+                    <span class="brand-tag">Nike Basketball</span>
+                    <h3 class="product-name">Kyrie Irving Flytrap</h3>
+                    <p class="product-desc">Didesain untuk kontrol traksi maksimal dan manuver cepat tanpa celah di lapangan. Konstruksi mesh revolusioner memastikan pergelangan kaki terkunci dengan aman.</p>
+                    <div class="product-footer">
+                        <div class="price">Rp 2.499.000</div>
+                        <button class="buy-btn">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3 -->
+            <div class="product-card">
+                <span class="product-badge">Classic Icons</span>
+                <div class="image-container">
+                    <img src="https://unsplash.com" alt="Adidas Original Superstar Black White" class="product-image">
+                </div>
+                <div class="product-info">
+                    <span class="brand-tag">Adidas Originals</span>
+                    <h3 class="product-name">Superstar Classic OG</h3>
+                    <p class="product-desc">Siluet legendaris dengan shell-toe karet protektif dan tiga garis kontras yang timeless. Gaya streetwear kasual serbaguna yang masuk untuk segala rentang usia.</p>
+                    <div class="product-footer">
+                        <div class="price">Rp 1.799.000</div>
+                        <button class="buy-btn">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ABOUT STORY SECTION -->
+    <section id="story">
+        <div class="story-container">
+            <div class="story-text">
+                <h2 style="text-transform:uppercase; margin-bottom:1rem; font-weight:900;">Our <span>Story</span></h2>
+                <h3>Digerakkan oleh Kultur, Bukan Sekadar Tren</h3>
+                <p>THE DRIP didirikan dari keresahan komunitas pecinta sneaker lokal yang kesulitan mendapatkan barang rilis orisinal tanpa rasa cemas akan produk tiruan. Kami bertindak sebagai kurator terpercaya Anda.</p>
+                <p>Setiap pasang sepatu melewati 5 tahap otentikasi fisik yang ketat sebelum sampai ke rak kami. Kami tidak menjual alas kaki; kami meneruskan kultur streetwear internasional ke depan pintu rumah Anda.</p>
+            </div>
+            <div class="story-img-frame">
+                <img src="https://unsplash.com" alt="The Drip Workshop Culture" class="story-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section id="ulasan">
+        <h2 class="section-title">Verified <span>Buyers</span></h2>
+        <div class="testimonial-grid">
+            <div class="testi-card">
+                <p class="testi-text">"Gila sih, Jordan 1 Retro-nya sampai dalam 2 hari, box mulus gak penyok. Pas dicek legitimasi lewat aplikasi luar negeri, statusnya 100% Authentic. Puas banget!"</p>
+                <div class="testi-author">Dimas Raditya</div>
+                <div class="testi-status">Sneakerhead, Jakarta</div>
+            </div>
+            <div class="testi-card">
+                <p class="testi-text">"Nyari Kyrie Flytrap kemana-mana habis, untung nemu di THE DRIP. Pelayanan ramah adminnya sabar bantu mastiin size chart biar gak salah pas fitting."</p>
+                <div class="testi-author">Sarah Amalia</div>
+                <div class="testi-status">Pebasket Regional, Bandung</div>
+            </div>
+            <div class="testi-card">
+                <p class="testi-text">"Awalnya ragu karena harganya bersaing banget, pas barang datang kualitas material kulitnya gak bisa bohong. Toko streetwear paling terpercaya saat ini."</p>
+                <div class="testi-author">Budi Santoso</div>
+                <div class="testi-status">Kolektor Klasik, Surabaya</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq">
+        <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-q">Apakah semua produk di THE DRIP 100% Original?</div>
+                <div class="faq-a">Ya. Kami memberikan jaminan uang kembali 100% beserta biaya kirim jika produk yang Anda terima terbukti tidak asli berdasarkan pengecekan pihak ketiga terverifikasi.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Bagaimana jika ukuran sepatu yang saya beli kekecilan?</div>
+                <div class="faq-a">Kami menyediakan garansi retur ukuran maksimal 3 hari setelah barang diterima, selama hangtag belum dilepas dan kondisi sepatu belum dipakai berjalan ke luar ruangan.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Berapa lama estimasi pengiriman barang?</div>
+                <div class="faq-a">Untuk wilayah JABODETABEK rata-rata membutuhkan waktu 1-2 hari kerja. Di luar wilayah tersebut memakan waktu 3-5 hari kerja menggunakan layanan ekspedisi berasuransi.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT FORM SECTION -->
+    <section id="kontak">
+        <h2 class="section-title">Get In <span>Touch</span></h2>
+        <div class="contact-container">
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Pesan berhasil terkirim! Tim kurator kami akan menghubungi Anda via Email/WhatsApp.');">
+                <div class="form-group">
+                    <label for="name">Nama Lengkap</label>
+                    <input type="text" id="name" class="form-control" placeholder="Contoh: Alex Wijaya" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Alamat Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="alex@domain.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Sepatu Yang Dicari / Pesan</label>
+                    <textarea id="message" rows="5" class="form-control" placeholder="Tulis seri sepatu khusus yang ingin Anda cari melalui jaringan ritel kami..." required></textarea>
+                </div>
+                <button type="submit" class="btn">Kirim Permintaan</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h4>THE <span>DRIP</span></h4>
+                <p>Distributor global resmi dan mandiri untuk ekosistem mode sub-kultur urban terbaik di tanah air.</p>
+            </div>
+            <div class="footer-links">
+                <h5>Navigasi</h5>
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#koleksi">Koleksi</a></li>
+                    <li><a href="#story">Story</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h5>Bantuan</h5>
+                <ul>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#ulasan">Ulasan Pelanggan</a></li>
+                    <li><a href="#kontak">Hubungi Kami</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 THE DRIP Luxury Sneakers. Seluruh Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

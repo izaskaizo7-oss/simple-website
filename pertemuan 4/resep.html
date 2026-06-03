@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="THE DRIP — Sepatu branded premium untuk semua kalangan. Temukan koleksi eksklusif sneakers & footwear terbaik dengan harga terjangkau." />
+  <meta name="keywords" content="sepatu branded, sneakers premium, THE DRIP, sepatu Nike, sepatu Adidas, sepatu mewah, footwear" />
+  <meta name="author" content="THE DRIP" />
+  <meta property="og:title" content="THE DRIP — Premium Branded Footwear" />
+  <meta property="og:description" content="Sepatu branded pilihan untuk semua gaya hidup. Sport, casual, luxury — semuanya ada di THE DRIP." />
+  <meta property="og:type" content="website" />
+  <title>THE DRIP — Premium Branded Footwear</title>
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────── */
+    :root {
+      --bg:        #0a0a0a;
+      --bg2:       #111111;
+      --bg3:       #181818;
+      --surface:   #1e1e1e;
+      --border:    #2a2a2a;
+      --accent:    #d4a017;
+      --accent2:   #e8b832;
+      --accent-dim:#a07c10;
+      --text:      #f0ece4;
+      --text-muted:#888880;
+      --text-dim:  #555550;
+      --white:     #ffffff;
+      --danger:    #e05a2b;
+
+      --f-display: 'Playfair Display', Georgia, serif;
+      --f-body:    'DM Sans', 'Helvetica Neue', sans-serif;
+      --f-mono:    'Courier New', monospace;
+
+      --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in:   cubic-bezier(0.7, 0, 0.84, 0);
+    }
+
+    /* ─── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: none; border: none; background: none; font-family: inherit; }
+    ul { list-style: none; }
+
+    /* ─── CUSTOM CURSOR ──────────────────────────────────── */
+    #cursor-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform .1s, background .2s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform .18s var(--ease-out), width .25s, height .25s, opacity .2s;
+      opacity: .6;
+    }
+    body:hover #cursor-ring { opacity: 1; }
+
+    /* ─── SCROLL PROGRESS ────────────────────────────────── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; background: var(--accent);
+      z-index: 9997; width: 0%;
+      transition: width .1s linear;
+    }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    h1, h2, h3 { font-family: var(--f-display); line-height: 1.05; letter-spacing: -.02em; }
+    p { line-height: 1.7; }
+
+    .label {
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600;
+    }
+
+    /* ─── NOISE OVERLAY ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9000;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .025;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+      padding: 1.4rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .4s, padding .4s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 5vw;
+    }
+    .nav-logo {
+      font-family: var(--f-display);
+      font-size: 1.5rem; font-weight: 900;
+      letter-spacing: .06em;
+      color: var(--white);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-size: .82rem; font-weight: 500; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-muted);
+      transition: color .2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0; right: 100%;
+      height: 1px; background: var(--accent);
+      transition: right .3s var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { right: 0; }
+    .nav-cta {
+      background: var(--accent); color: var(--bg);
+      padding: .6rem 1.4rem; font-size: .8rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      transition: background .2s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--text); transition: all .3s;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 5vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(212,160,23,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(212,160,23,.04) 0%, transparent 60%);
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 2; padding-top: 7rem; }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
+    }
+    .hero-eyebrow-line { width: 40px; height: 1px; background: var(--accent); }
+    .hero-h1 {
+      font-size: clamp(3.2rem, 6vw, 6rem);
+      font-weight: 900;
+      line-height: .95;
+      margin-bottom: 1.6rem;
+    }
+    .hero-h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--text-muted); max-width: 420px;
+      line-height: 1.8; margin-bottom: 3rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .7rem;
+      background: var(--accent); color: var(--bg);
+      padding: .9rem 2.2rem; font-size: .85rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,.15);
+      transform: translateX(-100%);
+      transition: transform .4s var(--ease-out);
+    }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(212,160,23,.3); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: .7rem;
+      border: 1px solid var(--border); color: var(--text-muted);
+      padding: .9rem 2.2rem; font-size: .85rem; font-weight: 500;
+      letter-spacing: .08em; text-transform: uppercase;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 4rem; padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--f-display); font-size: 2rem; font-weight: 700;
+      color: var(--white);
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: .72rem; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-top: .2rem; }
+
+    .hero-visual { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding-top: 5rem; }
+    .hero-shoe-wrap {
+      position: relative; width: 100%; max-width: 520px;
+    }
+    .hero-shoe-glow {
+      position: absolute; bottom: 10%;
+      left: 50%; transform: translateX(-50%);
+      width: 70%; height: 60px;
+      background: radial-gradient(ellipse, rgba(212,160,23,.35) 0%, transparent 70%);
+      filter: blur(20px);
+    }
+    .hero-shoe-bg-ring {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%; padding-bottom: 85%;
+      border-radius: 50%;
+      border: 1px solid rgba(212,160,23,.08);
+      animation: spin 20s linear infinite;
+    }
+    .hero-shoe-bg-ring::after {
+      content: '';
+      position: absolute; inset: 12%;
+      border-radius: 50%;
+      border: 1px dashed rgba(212,160,23,.12);
+    }
+    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .hero-shoe-svg {
+      position: relative; z-index: 1;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,.7));
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+    .hero-badge {
+      position: absolute; top: 15%; right: -5%;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: .8rem 1.2rem;
+      backdrop-filter: blur(10px);
+      animation: float 5s ease-in-out infinite .8s;
+    }
+    .hero-badge-top { font-size: .65rem; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; }
+    .hero-badge-val { font-family: var(--f-display); font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+    .hero-badge2 {
+      position: absolute; bottom: 18%; left: -8%;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: .7rem 1rem;
+      display: flex; align-items: center; gap: .7rem;
+      animation: float 4.5s ease-in-out infinite .3s;
+    }
+    .badge2-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; box-shadow: 0 0 8px #22c55e; }
+    .badge2-text { font-size: .72rem; color: var(--text-muted); }
+    .badge2-text strong { display: block; font-size: .78rem; color: var(--text); font-weight: 500; }
+
+    /* ─── MARQUEE ────────────────────────────────────────── */
+    .marquee-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      overflow: hidden;
+      padding: 1rem 0;
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 2rem;
+      padding: 0 2rem;
+      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--text-dim); font-weight: 500;
+    }
+    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+    /* ─── SECTION BASE ───────────────────────────────────── */
+    section { padding: 7rem 5vw; }
+    .section-head { margin-bottom: 4rem; }
+    .section-head h2 {
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      margin-top: .6rem; line-height: 1.02;
+    }
+    .section-head h2 em { font-style: italic; color: var(--accent); }
+    .section-head p { color: var(--text-muted); max-width: 480px; margin-top: 1.2rem; font-size: .95rem; }
+
+    /* ─── PRODUCTS ───────────────────────────────────────── */
+    #products { background: var(--bg); }
+    .products-filter {
+      display: flex; gap: .5rem; margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: .5rem 1.2rem; font-size: .75rem; letter-spacing: .1em;
+      text-transform: uppercase; border: 1px solid var(--border);
+      color: var(--text-muted); transition: all .2s; font-weight: 500;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: var(--accent); color: var(--accent); background: rgba(212,160,23,.06);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .product-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      overflow: hidden; position: relative;
+      transition: border-color .3s, transform .3s;
+      opacity: 0; transform: translateY(30px);
+    }
+    .product-card.visible { opacity: 1; transform: translateY(0); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out), border-color .3s; }
+    .product-card:hover { border-color: rgba(212,160,23,.3); }
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem; z-index: 2;
+      background: var(--accent); color: var(--bg);
+      font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+      font-weight: 700; padding: .25rem .65rem;
+    }
+    .product-badge.new { background: #22c55e; }
+    .product-badge.hot { background: var(--danger); }
+    .product-img {
+      height: 220px; background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      transition: transform .4s var(--ease-out);
+    }
+    .product-card:hover .product-img { transform: scale(1.02); }
+    .product-img svg { transition: transform .4s var(--ease-out); }
+    .product-card:hover .product-img svg { transform: scale(1.08) rotate(-3deg); }
+    .product-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10,10,10,.7);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .3s;
+    }
+    .product-card:hover .product-overlay { opacity: 1; }
+    .overlay-btn {
+      background: var(--accent); color: var(--bg);
+      padding: .7rem 1.6rem; font-size: .78rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      transform: translateY(10px); transition: transform .3s var(--ease-out);
+    }
+    .product-card:hover .overlay-btn { transform: translateY(0); }
+    .product-info { padding: 1.4rem; }
+    .product-brand { font-size: .65rem; color: var(--accent); letter-spacing: .15em; text-transform: uppercase; margin-bottom: .3rem; }
+    .product-name { font-size: 1rem; font-weight: 500; margin-bottom: .7rem; }
+    .product-bottom { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-family: var(--f-display); font-size: 1.25rem; font-weight: 700; color: var(--accent); }
+    .product-price del { font-size: .8rem; color: var(--text-dim); font-family: var(--f-body); font-weight: 400; margin-right: .3rem; }
+    .product-stars { display: flex; gap: 2px; }
+    .star { color: var(--accent); font-size: .75rem; }
+
+    /* ─── ABOUT ──────────────────────────────────────────── */
+    #about {
+      background: var(--bg2);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .about-visual { position: relative; }
+    .about-img-main {
+      width: 100%; aspect-ratio: 4/5;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .about-img-accent {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      width: 55%; aspect-ratio: 1;
+      background: var(--bg3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-number {
+      position: absolute; top: -1rem; left: -1rem;
+      font-family: var(--f-display); font-size: 7rem;
+      font-weight: 900; color: rgba(212,160,23,.08); line-height: 1;
+      pointer-events: none;
+    }
+    .about-content { }
+    .about-content h2 { font-size: clamp(2.2rem, 3.5vw, 3.2rem); }
+    .about-content h2 em { font-style: italic; color: var(--accent); }
+    .about-content p { color: var(--text-muted); margin-top: 1.4rem; font-size: .95rem; }
+    .about-features { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .about-feature {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.2rem; border: 1px solid var(--border);
+      background: var(--bg); transition: border-color .2s, transform .2s;
+    }
+    .about-feature:hover { border-color: rgba(212,160,23,.3); transform: translateX(4px); }
+    .feature-icon {
+      width: 38px; height: 38px; background: rgba(212,160,23,.1); border: 1px solid rgba(212,160,23,.2);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--accent); font-size: 1rem;
+    }
+    .feature-title { font-size: .88rem; font-weight: 600; margin-bottom: .3rem; }
+    .feature-desc { font-size: .8rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────── */
+    #testimonials { background: var(--bg); }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;
+    }
+    .testi-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      padding: 2rem; position: relative;
+      transition: border-color .3s, transform .3s;
+      opacity: 0; transform: translateY(20px);
+    }
+    .testi-card.visible { opacity: 1; transform: translateY(0); transition: opacity .5s var(--ease-out), transform .5s var(--ease-out), border-color .3s; }
+    .testi-card:hover { border-color: rgba(212,160,23,.25); transform: translateY(-4px); }
+    .testi-quote {
+      font-family: var(--f-display); font-size: 3.5rem;
+      color: var(--accent); opacity: .25; line-height: 1;
+      position: absolute; top: 1rem; right: 1.5rem;
+    }
+    .testi-stars { display: flex; gap: 3px; margin-bottom: 1rem; }
+    .testi-text { font-size: .9rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.5rem; }
+    .testi-author { display: flex; align-items: center; gap: .8rem; border-top: 1px solid var(--border); padding-top: 1.2rem; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--surface); border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--f-display); font-size: .9rem; font-weight: 700; color: var(--accent);
+      flex-shrink: 0;
+    }
+    .testi-name { font-size: .85rem; font-weight: 500; }
+    .testi-role { font-size: .72rem; color: var(--text-dim); }
+    .testi-verified { font-size: .65rem; color: #22c55e; letter-spacing: .08em; text-transform: uppercase; margin-top: .1rem; }
+
+    /* ─── FAQ ────────────────────────────────────────────── */
+    #faq { background: var(--bg2); }
+    .faq-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .faq-list { display: flex; flex-direction: column; gap: .5rem; }
+    .faq-item {
+      border: 1px solid var(--border);
+      transition: border-color .2s;
+    }
+    .faq-item.open { border-color: rgba(212,160,23,.3); }
+    .faq-q {
+      width: 100%; padding: 1.3rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .9rem; font-weight: 500;
+      text-align: left; color: var(--text);
+      transition: color .2s;
+    }
+    .faq-item.open .faq-q { color: var(--accent); }
+    .faq-icon {
+      width: 24px; height: 24px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; flex-shrink: 0;
+      transition: transform .3s, border-color .2s, background .2s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      border-color: var(--accent);
+      background: rgba(212,160,23,.1); color: var(--accent);
+    }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s var(--ease-out), padding .3s;
+      padding: 0 1.5rem;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 1.5rem 1.3rem; }
+    .faq-a p { font-size: .88rem; color: var(--text-muted); line-height: 1.8; }
+    .faq-cta-box {
+      background: var(--bg); border: 1px solid var(--border); padding: 2.5rem;
+      position: sticky; top: 7rem;
+    }
+    .faq-cta-box h3 { font-family: var(--f-display); font-size: 1.8rem; margin-bottom: 1rem; }
+    .faq-cta-box p { font-size: .88rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+
+    /* ─── CONTACT ────────────────────────────────────────── */
+    #contact { background: var(--bg); }
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info h2 { font-size: clamp(2rem, 3.5vw, 3rem); }
+    .contact-info h2 em { font-style: italic; color: var(--accent); }
+    .contact-info p { color: var(--text-muted); margin-top: 1.2rem; font-size: .93rem; line-height: 1.8; }
+    .contact-details { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.2rem; border: 1px solid var(--border);
+      transition: border-color .2s;
+    }
+    .contact-item:hover { border-color: rgba(212,160,23,.3); }
+    .contact-icon { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; width: 20px; text-align: center; }
+    .contact-label { font-size: .7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .1em; }
+    .contact-val { font-size: .88rem; font-weight: 500; margin-top: .1rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-group label { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text); padding: .85rem 1rem; font-size: .9rem;
+      font-family: inherit;
+      transition: border-color .2s, box-shadow .2s;
+      resize: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(212,160,23,.08);
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-dim); }
+    .form-submit {
+      background: var(--accent); color: var(--bg);
+      padding: 1rem 2rem; font-size: .85rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      width: 100%;
+    }
+    .form-submit:hover {
+      background: var(--accent2); transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(212,160,23,.25);
+    }
+    .form-note { font-size: .75rem; color: var(--text-dim); text-align: center; margin-top: .5rem; }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 4rem 5vw 2rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+      padding-bottom: 3rem; border-bottom: 1px solid var(--border);
+    }
+    .footer-brand h3 {
+      font-family: var(--f-display); font-size: 1.6rem; font-weight: 900;
+      letter-spacing: .05em; margin-bottom: 1rem;
+    }
+    .footer-brand h3 span { color: var(--accent); }
+    .footer-brand p { font-size: .85rem; color: var(--text-muted); line-height: 1.75; max-width: 280px; }
+    .footer-socials { display: flex; gap: .6rem; margin-top: 1.5rem; }
+    .social-link {
+      width: 36px; height: 36px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; color: var(--text-muted);
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(212,160,23,.07); }
+    .footer-col h4 {
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--text); margin-bottom: 1.2rem; font-weight: 600;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: .65rem; }
+    .footer-col a { font-size: .84rem; color: var(--text-muted); transition: color .2s; }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+    }
+    .footer-copy { font-size: .78rem; color: var(--text-dim); }
+    .footer-copy span { color: var(--accent); }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-size: .78rem; color: var(--text-dim); transition: color .2s; }
+    .footer-legal a:hover { color: var(--text-muted); }
+
+    /* ─── REVEAL ANIMATIONS ──────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0; transform: translateX(-30px);
+      transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0; transform: translateX(30px);
+      transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ─── MOBILE NAV MENU ────────────────────────────────── */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 790;
+      background: rgba(10,10,10,.98); backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem;
+      transform: translateX(100%);
+      transition: transform .4s var(--ease-out);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu a {
+      font-family: var(--f-display); font-size: 2.2rem; font-weight: 700;
+      letter-spacing: .02em; color: var(--text-muted);
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ─── TOAST ──────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      background: var(--surface); border: 1px solid rgba(212,160,23,.4);
+      padding: 1rem 1.5rem; display: flex; align-items: center; gap: .8rem;
+      transform: translateY(100px); opacity: 0;
+      transition: all .4s var(--ease-out);
+      max-width: 320px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+    .toast-msg { font-size: .85rem; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      #hero { grid-template-columns: 1fr; text-align: center; }
+      .hero-sub { margin: 0 auto 3rem; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-visual { display: none; }
+      #about { grid-template-columns: 1fr; }
+      .about-visual { display: none; }
+      .faq-layout { grid-template-columns: 1fr; }
+      .faq-cta-box { position: static; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-h1 { font-size: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      section { padding: 5rem 4vw; }
+    }
+    @media (max-width: 480px) {
+      nav { padding: 1rem 4vw; }
+      .hero-h1 { font-size: 2.4rem; }
+      .hero-stats { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="scroll-progress"></div>
+
+<!-- TOAST -->
+<div id="toast">
+  <div class="toast-icon">✓</div>
+  <div class="toast-msg">Pesan kamu sudah terkirim! Kami akan segera menghubungi kamu.</div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#products" onclick="closeMobile()">Produk</a>
+  <a href="#about" onclick="closeMobile()">Tentang Kami</a>
+  <a href="#testimonials" onclick="closeMobile()">Review</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#contact" onclick="closeMobile()">Kontak</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">THE<span>&nbsp;DRIP</span></div>
+  <div class="nav-links">
+    <a href="#products">Produk</a>
+    <a href="#about">Tentang</a>
+    <a href="#testimonials">Review</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Kontak</a>
+  </div>
+  <a href="#products" class="nav-cta">Shop Now</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="label">Premium Branded Footwear</span>
+    </div>
+    <h1 class="hero-h1">
+      Langkah<br>
+      <em>Berani,</em><br>
+      Gaya Tak<br>Tertandingi
+    </h1>
+    <p class="hero-sub">
+      Dari jalanan kota hingga panggung style dunia —<br>
+      THE DRIP hadir untuk mereka yang tahu kualitas.
+    </p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">
+        Lihat Koleksi
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#about" class="btn-outline">Brand Story</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Model Tersedia</div>
+      </div>
+      <div>
+        <div class="stat-num">12K<span>+</span></div>
+        <div class="stat-label">Pelanggan Puas</div>
+      </div>
+      <div>
+        <div class="stat-num">4.9<span>★</span></div>
+        <div class="stat-label">Rating Rata-rata</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-shoe-wrap">
+      <div class="hero-shoe-bg-ring"></div>
+      <div class="hero-shoe-glow"></div>
+      <!-- SVG Shoe Illustration -->
+      <svg class="hero-shoe-svg" viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sole -->
+        <ellipse cx="240" cy="295" rx="195" ry="18" fill="#111" opacity=".6"/>
+        <!-- Midsole -->
+        <path d="M 55 260 Q 60 275 100 280 L 390 278 Q 430 275 430 260 L 420 245 Q 380 250 240 250 Q 100 250 60 245 Z" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+        <!-- Outsole detail -->
+        <path d="M 100 278 L 390 276" stroke="#333" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <!-- Main upper -->
+        <path d="M 65 245 C 60 220 58 190 72 165 C 88 138 120 125 158 120 L 270 115 C 310 112 345 118 368 130 C 390 142 400 162 405 185 L 415 245 Q 360 252 240 252 Q 120 252 65 245 Z" fill="#1c1c1c" stroke="#2e2e2e" stroke-width="1.5"/>
+        <!-- Toe box -->
+        <path d="M 65 245 C 58 230 56 200 68 175 C 80 152 105 140 135 135 L 165 130 L 170 120 L 145 122 C 110 126 80 140 65 165 C 50 188 50 215 55 245 Z" fill="#222" stroke="#2a2a2a" stroke-width="1"/>
+        <!-- Swoosh / logo stripe -->
+        <path d="M 150 135 C 200 128 280 130 340 145 C 370 153 395 167 398 178 C 390 168 370 158 340 150 C 280 135 200 133 150 135 Z" fill="rgba(212,160,23,0.85)" opacity=".9"/>
+        <!-- Laces area -->
+        <path d="M 175 123 L 185 248" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/>
+        <path d="M 210 120 L 218 249" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/>
+        <path d="M 245 119 L 251 249" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/>
+        <path d="M 280 120 L 284 249" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/>
+        <path d="M 315 123 L 317 249" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/>
+        <!-- Lace crossings -->
+        <path d="M 175 138 L 210 134" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 210 148 L 245 144" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 245 158 L 280 154" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 280 168 L 315 164" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 175 175 L 210 170" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M 210 185 L 245 180" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M 245 195 L 280 190" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M 280 205 L 315 200" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Ankle collar -->
+        <path d="M 340 150 C 370 155 400 168 415 190 L 415 220 C 410 210 400 200 385 192 C 365 182 345 175 340 150 Z" fill="#252525" stroke="#333" stroke-width="1"/>
+        <!-- Heel tab -->
+        <path d="M 405 200 C 415 200 425 210 425 230 L 420 250 L 400 250 L 398 230 C 398 215 400 205 405 200 Z" fill="#1e1e1e" stroke="#2a2a2a" stroke-width="1"/>
+        <!-- Logo text on heel -->
+        <text x="406" y="234" font-size="7" fill="rgba(212,160,23,0.6)" font-family="serif" font-weight="700" text-anchor="middle" transform="rotate(90, 406, 234)">DRIP</text>
+        <!-- Stitching -->
+        <path d="M 90 240 Q 240 245 400 240" stroke="#333" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
+        <!-- Highlight -->
+        <path d="M 130 130 C 160 122 220 118 270 118" stroke="rgba(255,255,255,0.05)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="hero-badge">
+        <div class="hero-badge-top">New Drop</div>
+        <div class="hero-badge-val">2025</div>
+      </div>
+      <div class="hero-badge2">
+        <div class="badge2-dot"></div>
+        <div class="badge2-text">
+          <strong>Stok Terbatas</strong>
+          Tersisa 12 pasang
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><div class="marquee-dot"></div>Nike</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Adidas</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Jordan</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>New Balance</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Puma</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Asics</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Reebok</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Vans</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Converse</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Salomon</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Nike</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Adidas</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Jordan</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>New Balance</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Puma</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Asics</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Reebok</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Vans</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Converse</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Salomon</div>
+  </div>
+</div>
+
+<!-- ── PRODUCTS ── -->
+<section id="products">
+  <div class="section-head reveal">
+    <span class="label">Koleksi Pilihan</span>
+    <h2>Temukan <em>Drip</em><br>Kamu Disini</h2>
+    <p>Setiap pasang sudah dikurasi oleh tim kami — 100% original, garansi authenticity.</p>
+  </div>
+  <div class="products-filter reveal">
+    <button class="filter-btn active" onclick="filterProducts('all', this)">Semua</button>
+    <button class="filter-btn" onclick="filterProducts('lifestyle', this)">Lifestyle</button>
+    <button class="filter-btn" onclick="filterProducts('sport', this)">Sport</button>
+    <button class="filter-btn" onclick="filterProducts('limited', this)">Limited</button>
+  </div>
+  <div class="products-grid" id="productsGrid">
+
+    <!-- Card 1 -->
+    <div class="product-card" data-cat="limited">
+      <div class="product-badge">Limited</div>
+      <div class="product-img">
+        <svg viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="200">
+          <path d="M30 125 C28 110 27 90 38 75 C50 60 72 52 92 50 L155 48 C178 46 198 52 210 62 C222 72 226 88 226 105 L228 125 Q175 130 128 130 Q80 130 30 125Z" fill="#181818" stroke="#2a2a2a"/>
+          <path d="M75 52 C110 45 165 48 198 65 C190 58 170 52 145 50 C120 48 95 50 75 52Z" fill="rgba(212,160,23,0.7)"/>
+          <ellipse cx="128" cy="138" rx="100" ry="10" fill="#111" opacity=".5"/>
+          <path d="M30 125 L228 122" stroke="#2e2e2e" stroke-width="1" stroke-dasharray="5 3"/>
+          <text x="185" y="100" font-size="8" fill="rgba(212,160,23,0.5)" font-family="serif" font-weight="700">JORDAN</text>
+        </svg>
+        <div class="product-overlay"><div class="overlay-btn">Lihat Detail</div></div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Jordan Brand</div>
+        <div class="product-name">Air Jordan 1 Retro High OG "Gold"</div>
+        <div class="product-bottom">
+          <div class="product-price"><del>Rp 3.800.000</del>Rp 2.950.000</div>
+          <div class="product-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card" data-cat="lifestyle">
+      <div class="product-badge new">New</div>
+      <div class="product-img">
+        <svg viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="200">
+          <path d="M35 122 C32 108 31 88 42 72 C54 56 78 48 100 46 L162 44 C185 42 207 49 218 60 C230 72 232 90 230 110 L232 122 Q178 128 132 128 Q85 128 35 122Z" fill="#0f1a2e" stroke="#1e2d45"/>
+          <path d="M80 48 C115 41 170 45 205 63 C196 55 175 49 148 47 C121 45 97 47 80 48Z" fill="#c0392b" opacity=".8"/>
+          <path d="M105 48 L110 125" stroke="#1a2840" stroke-width="6" stroke-linecap="round"/>
+          <path d="M135 46 L138 126" stroke="#1a2840" stroke-width="6" stroke-linecap="round"/>
+          <path d="M165 47 L166 125" stroke="#1a2840" stroke-width="6" stroke-linecap="round"/>
+          <path d="M105 62 L135 60" stroke="#243550" stroke-width="2"/>
+          <path d="M135 72 L165 70" stroke="#243550" stroke-width="2"/>
+          <ellipse cx="132" cy="136" rx="100" ry="9" fill="#0a0e18" opacity=".5"/>
+          <text x="190" y="100" font-size="7" fill="rgba(255,255,255,0.2)" font-family="sans-serif" font-weight="700">NB</text>
+        </svg>
+        <div class="product-overlay"><div class="overlay-btn">Lihat Detail</div></div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">New Balance</div>
+        <div class="product-name">NB 550 Navy Red</div>
+        <div class="product-bottom">
+          <div class="product-price">Rp 1.650.000</div>
+          <div class="product-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="color:var(--border)">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card" data-cat="sport">
+      <div class="product-badge hot">Hot</div>
+      <div class="product-img">
+        <svg viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="200">
+          <path d="M28 120 C26 105 25 85 36 68 C48 52 72 44 94 42 L158 40 C182 38 203 45 215 57 C228 70 230 88 228 108 L230 120 Q175 126 128 126 Q80 126 28 120Z" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <path d="M75 44 C120 35 180 42 212 60 C200 52 178 46 150 44 C122 42 95 44 75 44Z" fill="#27ae60" opacity=".8"/>
+          <ellipse cx="128" cy="133" rx="103" ry="9" fill="#111" opacity=".5"/>
+          <circle cx="60" cy="82" r="18" fill="#222" stroke="#333"/>
+          <circle cx="60" cy="82" r="12" fill="#1a1a1a" stroke="#444"/>
+          <circle cx="60" cy="82" r="5" fill="#d4a017"/>
+          <text x="170" y="96" font-size="8" fill="rgba(255,255,255,0.15)" font-family="sans-serif" font-weight="900">ADIDAS</text>
+        </svg>
+        <div class="product-overlay"><div class="overlay-btn">Lihat Detail</div></div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Adidas</div>
+        <div class="product-name">Ultraboost 24 "Black Olive"</div>
+        <div class="product-bottom">
+          <div class="product-price"><del>Rp 2.200.000</del>Rp 1.880.000</div>
+          <div class="product-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="product-card" data-cat="lifestyle">
+      <div class="product-img">
+        <svg viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="200">
+          <path d="M32 122 C30 106 28 84 40 66 C54 48 80 40 104 38 L168 36 C192 34 215 42 224 56 C234 70 235 90 232 112 L234 122 Q178 128 130 128 Q82 128 32 122Z" fill="#2c1810" stroke="#3d2214"/>
+          <path d="M82 40 C122 32 180 38 218 58 C208 50 186 44 158 42 C130 40 102 42 82 40Z" fill="#c8a96e" opacity=".7"/>
+          <path d="M110 40 L114 126" stroke="#3a2010" stroke-width="7"/>
+          <path d="M140 38 L142 127" stroke="#3a2010" stroke-width="7"/>
+          <path d="M170 40 L170 126" stroke="#3a2010" stroke-width="7"/>
+          <path d="M110 55 L140 52" stroke="#4a2e18" stroke-width="2"/>
+          <path d="M140 66 L170 63" stroke="#4a2e18" stroke-width="2"/>
+          <path d="M110 78 L140 75" stroke="#4a2e18" stroke-width="2"/>
+          <ellipse cx="130" cy="136" rx="103" ry="9" fill="#1a0a04" opacity=".5"/>
+          <text x="186" y="104" font-size="7" fill="rgba(200,169,110,0.3)" font-family="sans-serif" font-weight="700">VANS</text>
+        </svg>
+        <div class="product-overlay"><div class="overlay-btn">Lihat Detail</div></div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Vans</div>
+        <div class="product-name">Old Skool "Mocha Brown"</div>
+        <div class="product-bottom">
+          <div class="product-price">Rp 780.000</div>
+          <div class="product-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="color:var(--border)">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="product-card" data-cat="sport">
+      <div class="product-badge new">New</div>
+      <div class="product-img">
+        <svg viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="200">
+          <path d="M30 120 C28 104 26 82 38 64 C52 46 78 38 102 36 L168 34 C192 32 216 40 226 55 C236 70 237 90 234 112 L236 120 Q180 126 132 126 Q84 126 30 120Z" fill="#e8e4dc" stroke="#ccc"/>
+          <path d="M80 38 C120 30 178 36 220 57 C210 48 188 42 160 40 C132 38 104 40 80 38Z" fill="#e05a2b" opacity=".75"/>
+          <text x="186" y="96" font-size="8" fill="rgba(0,0,0,0.12)" font-family="sans-serif" font-weight="900">NIKE</text>
+          <path d="M90 90 C130 70 180 75 216 88" stroke="rgba(0,0,0,0.12)" stroke-width="3" fill="none"/>
+          <ellipse cx="132" cy="133" rx="103" ry="9" fill="#999" opacity=".3"/>
+        </svg>
+        <div class="product-overlay"><div class="overlay-btn">Lihat Detail</div></div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Nike</div>
+        <div class="product-name">Air Max 270 "Sail Orange"</div>
+        <div class="product-bottom">
+          <div class="product-price"><del>Rp 2.100.000</del>Rp 1.790.000</div>
+          <div class="product-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="product-card" data-cat="limited">
+      <div class="product-badge">Limited</div>
+      <div class="product-img">
+        <svg viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="200">
+          <path d="M34 122 C31 106 30 84 42 67 C56 49 82 41 106 39 L170 37 C194 35 217 43 226 57 C236 72 237 92 234 113 L236 122 Q180 128 132 128 Q84 128 34 122Z" fill="#0a0f1a" stroke="#141e30"/>
+          <path d="M84 41 C124 33 182 39 220 59 C210 50 188 44 160 42 C132 40 105 42 84 41Z" fill="#d4a017" opacity=".9"/>
+          <path d="M115 42 L120 126" stroke="#0f1726" stroke-width="7"/>
+          <path d="M145 40 L148 127" stroke="#0f1726" stroke-width="7"/>
+          <path d="M175 42 L174 126" stroke="#0f1726" stroke-width="7"/>
+          <path d="M115 58 L145 55" stroke="#1a2540" stroke-width="2"/>
+          <path d="M145 68 L175 66" stroke="#1a2540" stroke-width="2"/>
+          <path d="M115 80 L145 77" stroke="#1a2540" stroke-width="2"/>
+          <path d="M145 90 L175 88" stroke="#1a2540" stroke-width="2"/>
+          <ellipse cx="132" cy="136" rx="103" ry="9" fill="#060a12" opacity=".6"/>
+          <text x="62" y="106" font-size="8" fill="rgba(212,160,23,0.4)" font-family="serif" font-weight="700">SALOMON</text>
+        </svg>
+        <div class="product-overlay"><div class="overlay-btn">Lihat Detail</div></div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Salomon</div>
+        <div class="product-name">XT-6 Advanced "Gold Navy"</div>
+        <div class="product-bottom">
+          <div class="product-price">Rp 3.250.000</div>
+          <div class="product-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-visual reveal-left">
+    <div class="about-number">TD</div>
+    <div class="about-img-main">
+      <svg viewBox="0 0 340 420" fill="none" xmlns="http://www.w3.org/2000/svg" width="280">
+        <rect width="340" height="420" fill="#181818"/>
+        <!-- Store shelving visualization -->
+        <rect x="20" y="30" width="300" height="3" fill="#2a2a2a"/>
+        <rect x="20" y="130" width="300" height="3" fill="#2a2a2a"/>
+        <rect x="20" y="230" width="300" height="3" fill="#2a2a2a"/>
+        <rect x="20" y="330" width="300" height="3" fill="#2a2a2a"/>
+        <!-- Shoes on shelves -->
+        <!-- Shelf 1 -->
+        <ellipse cx="90" cy="118" rx="55" ry="8" fill="#111" opacity=".4"/>
+        <path d="M45 115 C43 105 43 92 50 84 C58 76 70 72 82 71 L108 70 C120 69 130 72 135 78 C140 84 141 94 140 108 L141 115 Q108 118 88 118 Q68 118 45 115Z" fill="#1e1e1e" stroke="#2e2e2e"/>
+        <path d="M65 72 C85 68 115 71 133 80 C125 75 112 72 98 71 C84 70 72 72 65 72Z" fill="rgba(212,160,23,0.6)"/>
+        <!-- Shelf 2 row -->
+        <ellipse cx="215" cy="118" rx="55" ry="8" fill="#111" opacity=".4"/>
+        <path d="M170 115 C168 105 168 92 175 84 C183 76 195 72 207 71 L233 70 C245 69 255 72 260 78 C265 84 266 94 265 108 L266 115 Q233 118 213 118 Q193 118 170 115Z" fill="#0f1a2e" stroke="#1e2d45"/>
+        <path d="M190 72 C210 68 240 71 258 80 C250 75 237 72 223 71 C209 70 197 72 190 72Z" fill="#c0392b" opacity=".7"/>
+        <!-- Shelf 3 -->
+        <ellipse cx="90" cy="218" rx="55" ry="8" fill="#111" opacity=".4"/>
+        <path d="M45 215 C43 205 43 192 50 184 C58 176 70 172 82 171 L108 170 C120 169 130 172 135 178 C140 184 141 194 140 208 L141 215 Q108 218 88 218 Q68 218 45 215Z" fill="#2c1810" stroke="#3d2214"/>
+        <path d="M65 172 C85 168 115 171 133 180 C125 175 112 172 98 171 C84 170 72 172 65 172Z" fill="rgba(200,169,110,0.7)"/>
+        <!-- Shelf 4 -->
+        <ellipse cx="215" cy="218" rx="55" ry="8" fill="#111" opacity=".4"/>
+        <path d="M170 215 C168 205 168 192 175 184 C183 176 195 172 207 171 L233 170 C245 169 255 172 260 178 C265 184 266 194 265 208 L266 215 Q233 218 213 218 Q193 218 170 215Z" fill="#e8e4dc" stroke="#ccc"/>
+        <path d="M190 172 C210 168 240 171 258 180 C250 175 237 172 223 171 C209 170 197 172 190 172Z" fill="#e05a2b" opacity=".7"/>
+        <!-- Gold accent line -->
+        <rect x="0" y="0" width="4" height="420" fill="var(--accent)" opacity=".4"/>
+        <!-- Brand text -->
+        <text x="170" y="385" font-size="42" font-family="Georgia, serif" font-weight="900" fill="rgba(212,160,23,0.08)" text-anchor="middle" letter-spacing="8">THE DRIP</text>
+      </svg>
+    </div>
+    <div class="about-img-accent">
+      <div style="text-align:center; padding:1.5rem;">
+        <div style="font-family:var(--f-display);font-size:2.5rem;font-weight:900;color:var(--accent);">2019</div>
+        <div style="font-size:.72rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem;">Tahun Berdiri</div>
+        <div style="margin-top:1rem;font-size:.82rem;color:var(--text-dim);line-height:1.6;">Memulai dari satu rak, kini ribuan pasang terjual.</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-content reveal-right">
+    <span class="label">Brand Story</span>
+    <h2>Bukan Sekadar<br>Toko — Ini <em>Kultur</em></h2>
+    <p>THE DRIP lahir dari obsesi sederhana: setiap orang berhak tampil dengan sepatu terbaik tanpa harus mengorbankan keaslian. Kami dimulai di sebuah garasi kecil di Jambi, dengan satu keyakinan — kualitas tidak harus mahal, tapi tidak pernah boleh dikompromikan.</p>
+    <p style="margin-top:.8rem;">Kini, lebih dari 12.000 pelanggan setia mempercayai THE DRIP sebagai destinasi utama mereka untuk sneakers dan footwear branded original.</p>
+    <div class="about-features">
+      <div class="about-feature">
+        <div class="feature-icon">✦</div>
+        <div>
+          <div class="feature-title">100% Original & Authenticated</div>
+          <div class="feature-desc">Setiap produk melalui proses verifikasi keaslian ketat. Garansi uang kembali jika terbukti palsu.</div>
+        </div>
+      </div>
+      <div class="about-feature">
+        <div class="feature-icon">⟳</div>
+        <div>
+          <div class="feature-title">Gratis Tukar Ukuran</div>
+          <div class="feature-desc">Salah ukuran? Tenang — kami ganti gratis dalam 7 hari tanpa pertanyaan.</div>
+        </div>
+      </div>
+      <div class="about-feature">
+        <div class="feature-icon">⬡</div>
+        <div>
+          <div class="feature-title">Pengiriman Ke Seluruh Indonesia</div>
+          <div class="feature-desc">Kerjasama dengan kurir terpercaya. Paket dikemas premium, aman sampai tujuan.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="section-head reveal">
+    <span class="label">Social Proof</span>
+    <h2>Ribuan <em>Drippers</em><br>Sudah Percaya</h2>
+    <p>Bukan klaim kami — ini kata mereka yang sudah merasakan langsung.</p>
+  </div>
+  <div class="testi-grid">
+
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Udah lama cari Jordan 1 yang beneran legit, akhirnya nemu di THE DRIP. Datengnya cepet, packagingnya rapih banget kayak beli di toko resmi. Bakal balik lagi pasti!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div>
+          <div class="testi-name">Rizky Pratama</div>
+          <div class="testi-role">Jakarta Selatan</div>
+          <div class="testi-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Salomon XT-6 yang aku beli sesuai ekspektasi, bahkan lebih! CS-nya responsif dan bantu aku cek authenticity lewat video call. Trust banget sama THE DRIP.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div>
+          <div class="testi-name">Sari Wulandari</div>
+          <div class="testi-role">Surabaya</div>
+          <div class="testi-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Sebagai sneakerhead, aku cukup kritis soal keaslian. Udah cek 3 kali dan ini 100% legit. Harganya bahkan lebih murah dari yang jual di tempat lain. Recommended!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="testi-name">Aldo Ferdiansyah</div>
+          <div class="testi-role">Bandung</div>
+          <div class="testi-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="color:var(--border)">★</span>
+      </div>
+      <p class="testi-text">New Balance 550 warna navy-red yang aku minta ada! Seneng banget karena banyak toko lain stoknya habis. Proses pembelian gampang dan fast response.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">M</div>
+        <div>
+          <div class="testi-name">Mira Santoso</div>
+          <div class="testi-role">Medan</div>
+          <div class="testi-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Kado ulang tahun buat adik, pilih Vans Old Skool. Datengnya 2 hari, kotaknya mulus, ada authenticity card-nya. Adik seneng banget! Terima kasih THE DRIP.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">D</div>
+        <div>
+          <div class="testi-name">Dimas Arief</div>
+          <div class="testi-role">Yogyakarta</div>
+          <div class="testi-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Udah 4x order, nggak pernah kecewa. Yang terakhir Nike Air Max — persis seperti foto, sesuai ukuran, dan gratis ongkir ke Makassar. THE DRIP memang beda.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">N</div>
+        <div>
+          <div class="testi-name">Nur Hidayah</div>
+          <div class="testi-role">Makassar</div>
+          <div class="testi-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section id="faq">
+  <div class="faq-layout">
+    <div>
+      <div class="section-head reveal" style="margin-bottom:2.5rem;">
+        <span class="label">FAQ</span>
+        <h2>Pertanyaan<br>yang Sering <em>Ditanya</em></h2>
+      </div>
+      <div class="faq-list reveal">
+
+        <div class="faq-item open">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah semua produk 100% original?
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-a">
+            <p>Ya, mutlak 100% original. Kami hanya bekerja sama dengan distributor resmi dan melakukan pengecekan authenticity untuk setiap item sebelum dikirim. Jika terbukti palsu, kami kembalikan uang penuh tanpa pertanyaan.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Berapa lama waktu pengiriman?
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-a">
+            <p>Untuk Pulau Jawa umumnya 1-3 hari kerja. Luar Jawa 3-7 hari kerja. Kami menggunakan JNE, SiCepat, atau J&T Express. Tersedia juga opsi pengiriman same-day untuk area Jambi.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Bisakah saya tukar ukuran jika tidak pas?
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-a">
+            <p>Tentu saja! Kami punya kebijakan tukar ukuran gratis dalam 7 hari setelah produk diterima. Syaratnya produk belum dipakai dan kondisi masih sempurna seperti saat diterima.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Metode pembayaran apa saja yang tersedia?
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-a">
+            <p>Kami menerima transfer bank (BCA, Mandiri, BNI, BRI), GoPay, OVO, Dana, QRIS, serta COD untuk area Jambi. Tersedia juga cicilan 0% via kartu kredit untuk pembelian di atas Rp 500.000.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah ada program loyalty atau diskon member?
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-a">
+            <p>Ada! Program DRIP Member memberikan cashback 5% untuk setiap transaksi, akses early access ke koleksi limited, dan diskon khusus pada ulang tahun Anda. Daftar gratis via WhatsApp kami.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Bagaimana cara mengecek keaslian produk?
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-a">
+            <p>Setiap produk dilengkapi authenticity card kami. Selain itu, Anda bisa request video unboxing sebelum barang dikirim, dan kami bantu verifikasi melalui serial number resmi dari brand.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="faq-cta-box">
+        <span class="label">Masih Ada Pertanyaan?</span>
+        <h3>Kami Siap<br>Bantu Kamu</h3>
+        <p>Tim THE DRIP aktif 7 hari seminggu, 09.00–22.00 WIB. Chat langsung via WhatsApp untuk respons tercepat.</p>
+        <a href="https://wa.me/6281234567890" class="btn-primary" style="display:inline-flex;">
+          Chat WhatsApp
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.275 2 2 6.275 2 11.5c0 1.69.444 3.275 1.222 4.65L2 22l6.062-1.195C9.38 21.575 10.425 22 11.5 22 16.725 22 21 17.725 21 12.5 21 7.275 16.725 3 11.5 3zM11.5 20c-1.425 0-2.75-.388-3.894-1.062l-.275-.163-2.881.756.775-2.806-.181-.288A8.428 8.428 0 013 12.5C3 6.71 6.71 3 11.5 3S20 6.71 20 11.5 16.29 20 11.5 20z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="contact-info reveal-left">
+      <span class="label">Hubungi Kami</span>
+      <h2>Let's <em>Connect</em>,<br>Drippers</h2>
+      <p>Ada yang ingin kamu tanyakan? Mau request produk tertentu? Atau sekadar ingin tahu stok terbaru? Kami selalu siap.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-icon">◎</div>
+          <div>
+            <div class="contact-label">Alamat</div>
+            <div class="contact-val">Jl. Hayam Wuruk No. 24, Jambi, Indonesia</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">◌</div>
+          <div>
+            <div class="contact-label">WhatsApp / Telepon</div>
+            <div class="contact-val">+62 812-3456-7890</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">◈</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">hello@thedrip.id</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">◷</div>
+          <div>
+            <div class="contact-label">Jam Operasional</div>
+            <div class="contact-val">Setiap Hari, 09.00 – 22.00 WIB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="fname" placeholder="Nama kamu" />
+          </div>
+          <div class="form-group">
+            <label>Nomor WhatsApp</label>
+            <input type="tel" id="fphone" placeholder="+62 ..." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="femail" placeholder="email@kamu.com" />
+        </div>
+        <div class="form-group">
+          <label>Produk yang Diminati</label>
+          <select id="fproduct">
+            <option value="" disabled selected>Pilih kategori...</option>
+            <option>Nike — Air Max / Air Force / Dunks</option>
+            <option>Jordan Brand — AJ1 / AJ3 / AJ4</option>
+            <option>Adidas — Ultraboost / Samba / Campus</option>
+            <option>New Balance — 550 / 990 / 2002R</option>
+            <option>Salomon — XT-6 / Speedcross</option>
+            <option>Vans — Old Skool / Sk8-Hi</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Pesan</label>
+          <textarea id="fmsg" rows="4" placeholder="Ceritakan apa yang kamu cari, ukuran, warna, budget..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Kirim Pesan →</button>
+        <p class="form-note">Kami akan balas dalam kurang dari 2 jam pada jam operasional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>THE <span>DRIP</span></h3>
+      <p>Destinasi premium untuk sepatu branded original. Kualitas tanpa kompromi, style tanpa batas.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link" aria-label="Instagram">IG</a>
+        <a href="#" class="social-link" aria-label="TikTok">TK</a>
+        <a href="#" class="social-link" aria-label="WhatsApp">WA</a>
+        <a href="#" class="social-link" aria-label="Shopee">SP</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Produk</h4>
+      <ul>
+        <li><a href="#">Nike</a></li>
+        <li><a href="#">Adidas & Jordan</a></li>
+        <li><a href="#">New Balance</a></li>
+        <li><a href="#">Vans & Converse</a></li>
+        <li><a href="#">Salomon & Asics</a></li>
+        <li><a href="#">Koleksi Limited</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Layanan</h4>
+      <ul>
+        <li><a href="#">Cara Order</a></li>
+        <li><a href="#">Cek Authenticity</a></li>
+        <li><a href="#">Kebijakan Tukar</a></li>
+        <li><a href="#">Tracking Paket</a></li>
+        <li><a href="#">DRIP Membership</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#">Tentang Kami</a></li>
+        <li><a href="#">Blog & Style Guide</a></li>
+        <li><a href="#">Karir</a></li>
+        <li><a href="#">Syarat & Ketentuan</a></li>
+        <li><a href="#">Kebijakan Privasi</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 <span>THE DRIP</span>. All rights reserved. Made with passion in Jambi, Indonesia.</div>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────── -->
+<script>
+  /* Cursor */
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top  = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .product-card, .faq-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '.9';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '.6';
+    });
+  });
+
+  /* Scroll progress */
+  const progress = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    progress.style.width = pct + '%';
+  }, { passive: true });
+
+  /* Nav scroll */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* Scroll reveal */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        /* stagger children */
+        const children = e.target.querySelectorAll('.product-card, .testi-card');
+        children.forEach((c, i) => {
+          setTimeout(() => c.classList.add('visible'), i * 100);
+        });
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .product-card, .testi-card').forEach(el => observer.observe(el));
+
+  /* FAQ toggle */
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  /* Product filter */
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.product-card').forEach(card => {
+      const show = cat === 'all' || card.dataset.cat === cat;
+      card.style.display = show ? '' : 'none';
+    });
+  }
+
+  /* Mobile menu */
+  let mobileOpen = false;
+  function toggleMobile() {
+    mobileOpen = !mobileOpen;
+    document.getElementById('mobileMenu').classList.toggle('open', mobileOpen);
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+  }
+  function closeMobile() {
+    mobileOpen = false;
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* Toast */
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+
+  /* Form submit */
+  function submitForm() {
+    const name = document.getElementById('fname').value;
+    const email = document.getElementById('femail').value;
+    if (!name || !email) {
+      alert('Mohon isi nama dan email kamu dulu ya!');
+      return;
+    }
+    showToast();
+    document.getElementById('fname').value = '';
+    document.getElementById('fphone').value = '';
+    document.getElementById('femail').value = '';
+    document.getElementById('fproduct').selectedIndex = 0;
+    document.getElementById('fmsg').value = '';
+  }
+
+  /* Smooth scroll for nav links */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
